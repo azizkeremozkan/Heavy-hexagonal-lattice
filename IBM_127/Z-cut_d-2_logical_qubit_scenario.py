@@ -20,16 +20,12 @@ transpiled_circuit = transpile(circuit, backend, initial_layout=layout)
 pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
 isa_circuit = pm.run(transpiled_circuit)
 sampler = Sampler(backend)
-job = sampler.run([isa_circuit]) # default 4096 shot
-#result = job.result()
-#print(f" > Counts: {result[0].data.meas.get_counts()}")
-# alttaki klasik bit counts'ta solda
+job = sampler.run([isa_circuit]) # Default 4096 shot
 
-
-
-# bu kısım biten işlemin sonuçlarını görmek için
+# Son klasik bit counts'ta solda
+# Bu kısım biten işlemin sonuçlarını görmek için
 #service = QiskitRuntimeService()
-#job = service.job('cz39mga39f40008s6prg')
+#job = service.job('cz3ccqtp6030008c93tg')
 #job_result = job.result()
 # To get counts for a particular pub result, use 
 #
