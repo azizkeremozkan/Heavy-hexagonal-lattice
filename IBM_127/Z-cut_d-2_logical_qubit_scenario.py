@@ -1,4 +1,4 @@
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, transpile
 from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
 import matplotlib.pyplot as plt
@@ -12,17 +12,32 @@ circuit.h(0)
 circuit.cx(0, 1)
 circuit.measure(0,1)
 circuit.measure(1,0)
-
 #circuit.draw("mpl") 
 #plt.show()
 
+layout = {circuit.qubits[0]: 41, circuit.qubits[1]: 53}  # Developer qubit 0 → Physical qubit 41, Developer qubit 1 → Physical qubit 53
+transpiled_circuit = transpile(circuit, backend, initial_layout=layout)
 pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
-isa_circuit = pm.run(circuit)
+isa_circuit = pm.run(transpiled_circuit)
 sampler = Sampler(backend)
-job = sampler.run([isa_circuit])
-result = job.result()
-print(f" > Counts: {result[0].data.meas.get_counts()}")
+job = sampler.run([isa_circuit]) # default 4096 shot
+#result = job.result()
+#print(f" > Counts: {result[0].data.meas.get_counts()}")
 # alttaki klasik bit counts'ta solda
+
+
+
+# bu kısım biten işlemin sonuçlarını görmek için
+#service = QiskitRuntimeService()
+#job = service.job('cz39mga39f40008s6prg')
+#job_result = job.result()
+# To get counts for a particular pub result, use 
+#
+#pub_result = job_result[0].data.c.get_counts()
+#print(pub_result)
+#
+# where <idx> is the index of the pub and <classical register> is the name of the classical register. 
+# You can use circuit.cregs to find the name of the classical registers.
 
 
 
