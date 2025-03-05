@@ -63,14 +63,23 @@ backend = service.backend("ibm_brisbane")
 circuit = QuantumCircuit(no_of_qubits, no_of_classical_bits)
 
 # Veri kübitlerini rastgele pozisyonlara getir
-circuit.rx(np.pi/rd.randint(1, 32), 0)
-circuit.rz(np.pi/rd.randint(1, 32), 0)
-circuit.rx(np.pi/rd.randint(1, 32), 2)
-circuit.rz(np.pi/rd.randint(1, 32), 2)
-circuit.rx(np.pi/rd.randint(1, 32), 4)
-circuit.rz(np.pi/rd.randint(1, 32), 4)
-circuit.rx(np.pi/rd.randint(1, 32), 6)
-circuit.rz(np.pi/rd.randint(1, 32), 6)
+# Kutuplara yakın olsun
+circuit.rx(np.pi/rd.randint(6, 18), 0)
+circuit.rz(np.pi/rd.randint(6, 18), 0)
+if rd.randint(0, 1) == 1:
+	circuit.x(0)
+circuit.rx(np.pi/rd.randint(6, 18), 2)
+circuit.rz(np.pi/rd.randint(6, 18), 2)
+if rd.randint(0, 1) == 1:
+	circuit.x(2)
+circuit.rx(np.pi/rd.randint(6, 18), 4)
+circuit.rz(np.pi/rd.randint(6, 18), 4)
+if rd.randint(0, 1) == 1:
+	circuit.x(4)
+circuit.rx(np.pi/rd.randint(6, 18), 6)
+circuit.rz(np.pi/rd.randint(6, 18), 6)
+if rd.randint(0, 1) == 1:
+	circuit.x(6)
 circuit.barrier()
 
 # 1. cycle
@@ -99,7 +108,7 @@ job = sampler.run([isa_circuit]) # Default 4096 shot
 # Son klasik bit counts'ta solda
 # Bu kısım biten işlemin sonuçlarını görmek için
 #service = QiskitRuntimeService()
-#job = service.job('cz3ccqtp6030008c93tg')
+#job = service.job('cz42j9sh0kc00088ssj0')
 #job_result = job.result()
 # To get counts for a particular pub result, use 
 #
