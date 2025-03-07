@@ -56,7 +56,7 @@ def Z_round_of_S1(cycle_no):
 def Apply_logical_X():
 	circuit.x(6)	
 
-#QiskitRuntimeService.save_account(channel="ibm_quantum", token="ce340ef9fb79c9cfdd0b11d248999856a54fbceb7be04687a4ec4287440327a86fd83edcc398b15ee5b361936c6f284c4fd1c03ec9227b11ee2d920751abde25", overwrite=True, set_as_default=True) 
+'''#QiskitRuntimeService.save_account(channel="ibm_quantum", token="ce340ef9fb79c9cfdd0b11d248999856a54fbceb7be04687a4ec4287440327a86fd83edcc398b15ee5b361936c6f284c4fd1c03ec9227b11ee2d920751abde25", overwrite=True, set_as_default=True) 
 service = QiskitRuntimeService()
 backend = service.backend("ibm_brisbane")
 
@@ -64,23 +64,34 @@ circuit = QuantumCircuit(no_of_qubits, no_of_classical_bits)
 
 # Veri kübitlerini rastgele pozisyonlara getir
 # Kutuplara yakın olsun
-circuit.rx(np.pi/rd.randint(6, 18), 0)
-circuit.rz(np.pi/rd.randint(6, 18), 0)
-if rd.randint(0, 1) == 1:
-	circuit.x(0)
-circuit.rx(np.pi/rd.randint(6, 18), 2)
-circuit.rz(np.pi/rd.randint(6, 18), 2)
-if rd.randint(0, 1) == 1:
-	circuit.x(2)
-circuit.rx(np.pi/rd.randint(6, 18), 4)
-circuit.rz(np.pi/rd.randint(6, 18), 4)
-if rd.randint(0, 1) == 1:
-	circuit.x(4)
-circuit.rx(np.pi/rd.randint(6, 18), 6)
-circuit.rz(np.pi/rd.randint(6, 18), 6)
-if rd.randint(0, 1) == 1:
-	circuit.x(6)
-circuit.barrier()
+#circuit.rx(np.pi/rd.randint(6, 18), 0)
+#circuit.rz(np.pi/rd.randint(6, 18), 0)
+#if rd.randint(0, 1) == 1:
+#	circuit.x(0)
+#circuit.rx(np.pi/rd.randint(6, 18), 2)
+#circuit.rz(np.pi/rd.randint(6, 18), 2)
+#if rd.randint(0, 1) == 1:
+#	circuit.x(2)
+#circuit.rx(np.pi/rd.randint(6, 18), 4)
+#circuit.rz(np.pi/rd.randint(6, 18), 4)
+#if rd.randint(0, 1) == 1:
+#	circuit.x(4)
+#circuit.rx(np.pi/rd.randint(6, 18), 6)
+#circuit.rz(np.pi/rd.randint(6, 18), 6)
+#if rd.randint(0, 1) == 1:
+#	circuit.x(6)
+#circuit.barrier()
+
+# Tüm veri kübitleri başlangıçta 
+# |+> olacak şekilde çalıştır
+circuit.reset(0)
+circuit.h(0)
+circuit.reset(2)
+circuit.h(2)
+circuit.reset(4)
+circuit.h(4)
+circuit.reset(6)
+circuit.h(6)
 
 # 1. cycle
 Z_round_of_S1(1)
@@ -98,22 +109,22 @@ circuit.barrier()
 #plt.show()
 
 # Developer qubit A → Physical qubit B
-layout = {circuit.qubits[0]: 43, circuit.qubits[1]: 44, circuit.qubits[2]: 45, circuit.qubits[3]: 54, circuit.qubits[4]: 64, circuit.qubits[5]: 63, circuit.qubits[6]: 62} 
+layout = {circuit.qubits[0]: 39, circuit.qubits[1]: 40, circuit.qubits[2]: 41, circuit.qubits[3]: 53, circuit.qubits[4]: 60, circuit.qubits[5]: 59, circuit.qubits[6]: 58} 
 transpiled_circuit = transpile(circuit, backend, initial_layout=layout)
 pm = generate_preset_pass_manager(backend=backend, optimization_level=1)
 isa_circuit = pm.run(transpiled_circuit)
 sampler = Sampler(backend)
-job = sampler.run([isa_circuit]) # Default 4096 shot
+job = sampler.run([isa_circuit]) # Default 4096 shot'''
 
 # Son klasik bit counts'ta solda
 # Bu kısım biten işlemin sonuçlarını görmek için
-#service = QiskitRuntimeService()
-#job = service.job('cz42j9sh0kc00088ssj0')
-#job_result = job.result()
+service = QiskitRuntimeService()
+job = service.job('cz4rqdd39f40008sdw00')
+job_result = job.result()
 # To get counts for a particular pub result, use 
 #
-#pub_result = job_result[0].data.c.get_counts()
-#print(pub_result)
+pub_result = job_result[0].data.c.get_counts()
+print(pub_result)
 #
 # where <idx> is the index of the pub and <classical register> is the name of the classical register. 
 # You can use circuit.cregs to find the name of the classical registers.
