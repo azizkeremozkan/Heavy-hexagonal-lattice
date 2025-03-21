@@ -6,7 +6,7 @@ import numpy as np
 import random as rd
 
 no_of_qubits = 7 # 0:D1, 1:F1, 2:D2, 3:S1, 4:D3, 5:F2, 6:D4
-no_of_classical_bits = 2 # 1:S1'in 1. ölçümü, 0:S1'in 2. ölçümü 
+no_of_classical_bits = 4 # 3:S1'in 1. ölçümü, 2:S1'in 2. ölçümü, 1:F1'in ölçümleri(önemli değil), 0:F2'nin ölçümleri(önemli değil) 
 
 def Z_round_of_S1(cycle_no):
 	# 1. adım
@@ -28,10 +28,10 @@ def Z_round_of_S1(cycle_no):
 	circuit.cx(6, 5)
 	
 	# 5. adım
-	# F1 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(1, 1)
 	circuit.reset(1)
 	circuit.cx(4, 3)
-	# F2 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(5, 0)
 	circuit.reset(5)
 	
 	# 6. adım
@@ -48,9 +48,9 @@ def Z_round_of_S1(cycle_no):
 	circuit.cx(6, 5)
 	
 	# 9. adım
-	# F1 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(1, 1)
 	circuit.reset(1)
-	# F2 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(5, 0)
 	circuit.reset(5)
 	
 def Apply_logical_X():
@@ -83,8 +83,9 @@ circuit = QuantumCircuit(no_of_qubits, no_of_classical_bits)
 #circuit.barrier()
 
 # Tüm veri kübitleri başlangıçta 
-# |+> olacak şekilde çalıştır
+# |-+++> olacak şekilde çalıştır
 circuit.reset(0)
+circuit.x(0)
 circuit.h(0)
 circuit.reset(2)
 circuit.h(2)
@@ -119,7 +120,7 @@ job = sampler.run([isa_circuit]) # Default 4096 shot'''
 # Son klasik bit counts'ta solda
 # Bu kısım biten işlemin sonuçlarını görmek için
 service = QiskitRuntimeService()
-job = service.job('cz4rqdd39f40008sdw00')
+job = service.job('cze1d6cqadq0008cwp50')
 job_result = job.result()
 # To get counts for a particular pub result, use 
 #

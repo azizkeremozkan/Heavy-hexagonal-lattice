@@ -5,7 +5,7 @@ from qiskit_aer import AerSimulator
 from qiskit.visualization import plot_histogram
 
 no_of_qubits = 7 # 0:D1, 1:F1, 2:D2, 3:S1, 4:D3, 5:F2, 6:D4
-no_of_classical_bits = 2 # 1:S1'in 1. ölçümü, 0:S1'in 2. ölçümü 
+no_of_classical_bits = 4 # 3:S1'in 1. ölçümü, 2:S1'in 2. ölçümü, 1:F1'in ölçümleri(önemli değil), 0:F2'nin ölçümleri(önemli değil)
 
 def Z_round_of_S1(cycle_no):
 	# 1. adım
@@ -27,10 +27,10 @@ def Z_round_of_S1(cycle_no):
 	circuit.cx(6, 5)
 	
 	# 5. adım
-	# F1 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(1, 1)
 	circuit.reset(1)
 	circuit.cx(4, 3)
-	# F2 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(5, 0)
 	circuit.reset(5)
 	
 	# 6. adım
@@ -47,9 +47,9 @@ def Z_round_of_S1(cycle_no):
 	circuit.cx(6, 5)
 	
 	# 9. adım
-	# F1 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(1, 1)
 	circuit.reset(1)
-	# F2 Z tabanında ölçülecek ama bu özelliği kullanmiycam bu programda
+	circuit.measure(5, 0)
 	circuit.reset(5)
 	
 def Apply_logical_X():
@@ -58,16 +58,11 @@ def Apply_logical_X():
 circuit = QuantumCircuit(no_of_qubits, no_of_classical_bits)
 
 # Veri kübitleri başlangıçta 
-# |-+++> olacak şekilde çalıştır
+# |0000> olacak şekilde çalıştır
 circuit.reset(0)
-circuit.x(0)
-circuit.h(0)
 circuit.reset(2)
-circuit.h(2)
 circuit.reset(4)
-circuit.h(4)
 circuit.reset(6)
-circuit.h(6)
 circuit.barrier()
 
 # 1. cycle
